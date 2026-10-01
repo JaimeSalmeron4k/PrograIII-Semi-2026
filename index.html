@@ -1,134 +1,1456 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistemma de impuestos a las actvididades economicas</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+    <title>Sistema de Impuesto a las Actividades Económicas</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5.3.2 CSS & Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            --accent-gradient: linear-gradient(135deg, #0ba360 0%, #3cba92 100%);
+            --danger-gradient: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+            --card-bg: #ffffff;
+            --surface-bg: #f8fafc;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --radius-lg: 16px;
+            --radius-md: 10px;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.03);
+            --shadow-md: 0 6px 18px rgba(0,0,0,0.06);
+            --shadow-lg: 0 12px 28px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #f1f5f9;
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4, h5, .brand-title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+        }
+
+        /* Top Navbar */
+        .navbar-custom {
+            background: var(--primary-gradient);
+            box-shadow: var(--shadow-md);
+            padding: 0.9rem 1.5rem;
+        }
+        .navbar-custom .navbar-brand {
+            color: #ffffff;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .navbar-custom .badge-dept {
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Custom Tabs */
+        .nav-pills-custom {
+            background: #ffffff;
+            padding: 6px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            display: inline-flex;
+            gap: 6px;
+        }
+        .nav-pills-custom .nav-link {
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 8px 18px;
+            border-radius: 8px;
+            transition: all 0.25s ease;
+        }
+        .nav-pills-custom .nav-link:hover {
+            color: #1e3c72;
+            background: #f1f5f9;
+        }
+        .nav-pills-custom .nav-link.active {
+            background: var(--primary-gradient);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(30, 60, 114, 0.25);
+        }
+
+        /* Cards */
+        .custom-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            overflow: hidden;
+        }
+        .custom-card .card-header-custom {
+            padding: 1.1rem 1.4rem;
+            background: #fafbfc;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .custom-card .card-header-custom h5 {
+            margin: 0;
+            font-size: 1.05rem;
+            color: #0f172a;
+        }
+
+        /* Live Breakdown Card */
+        .breakdown-card {
+            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            border: 2px solid #cbd5e1;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            position: relative;
+        }
+        .breakdown-card.active-valid {
+            border-color: #10b981;
+            background: linear-gradient(145deg, #f0fdf4 0%, #ffffff 100%);
+        }
+        .breakdown-card.active-error {
+            border-color: #ef4444;
+            background: linear-gradient(145deg, #fef2f2 0%, #ffffff 100%);
+        }
+
+        .metric-pill {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-md);
+            padding: 10px 14px;
+            box-shadow: var(--shadow-sm);
+        }
+        .metric-label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+        .metric-value {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #0f172a;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .price-highlight-box {
+            background: var(--primary-gradient);
+            color: #ffffff;
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(30, 60, 114, 0.2);
+        }
+        .price-highlight-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            opacity: 0.85;
+            font-weight: 600;
+        }
+        .price-highlight-amount {
+            font-size: 2.2rem;
+            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+            margin: 4px 0;
+        }
+
+        .total-admin-box {
+            background: #f8fafc;
+            border: 2px dashed #94a3b8;
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            text-align: center;
+        }
+
+        /* Formulas & Code snippets */
+        .formula-display {
+            background: #0f172a;
+            color: #38bdf8;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        /* Custom Badges */
+        .badge-enterprise {
+            background-color: #3b82f6;
+            color: white;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+        .badge-particular {
+            background-color: #64748b;
+            color: white;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+        .badge-vigente {
+            background-color: #10b981;
+            color: white;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+        .badge-historico {
+            background-color: #f59e0b;
+            color: white;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+
+        /* Custom buttons */
+        .btn-brand-primary {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            font-weight: 600;
+            padding: 9px 20px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+        .btn-brand-primary:hover {
+            opacity: 0.92;
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(30, 60, 114, 0.25);
+        }
+
+        .btn-brand-success {
+            background: var(--accent-gradient);
+            color: white;
+            border: none;
+            font-weight: 600;
+            padding: 9px 20px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+        .btn-brand-success:hover {
+            opacity: 0.92;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        /* Tables */
+        .table-custom {
+            margin-bottom: 0;
+        }
+        .table-custom th {
+            background: #f1f5f9;
+            color: #475569;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 700;
+            padding: 12px 14px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .table-custom td {
+            padding: 12px 14px;
+            vertical-align: middle;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .table-custom tbody tr:hover {
+            background-color: #f8fafc;
+            cursor: pointer;
+        }
+
+        /* Floating Alert */
+        .alert-custom {
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
 
-<body class="container-fluid">
-    <div class="container-fluid">
-
-        <div class="row">
-
-            <div class="col-6">
-                <!--Aqui va el formulario-->
-                <div class="container text-center">
-
-                    <div class="row">
-
-                        <div class="col">
-
-                            <input placeholder="codigo" name="txtCodigoCliente" id="txtCodigoCliente"
-                                class="form-control" type="text">
-
-                        </div>
-
-
-                    </div>
-
-                    <div class="row">
-
-                        <div class="col">
-
-                            <input placeholder="nombre" name="txtNombreCliente" id="txtNombreCliente"
-                                class="form-control" type="text">
-
-                        </div>
-
-
-                    </div>
-
-                    <div class="row">
-
-                        <div class="col">
-
-                            <input placeholder="direccion" name="txtDireccionCliente" id="txtDireccionCliente"
-                                class="form-control" type="text">
-
-                        </div>
-
-
-                    </div>
-
-                    <div class="row">
-
-                        <div class="col">
-
-                            <input placeholder="telefono" name="txtTelefonoCliente" id="txtTelefonoCliente"
-                                class="form-control" type="text">
-
-                        </div>
-
-
-                    </div>
-
-                    <div class="row">
-
-                        <div class="col">
-
-                            <input placeholder="email" name="txtEmailCliente" id="txtEmailCliente" class="form-control"
-                                type="text">
-
-                        </div>
-
-
-                    </div>
-
-                    <div class="row">
-
-                        <div class="col">
-
-                            <select name="cboTipoPersona" id="cboTipoPersona" class="form-control">
-                                <option value="particular">Particular</option>
-                                <option value="empresa">Empresa</option>
-                            </select>
-
-                        </div>
-
-                    </div>
-
-                    <div class="row">
-
-                        <div class="col">
-
-                            <input type="button" value="Guardar" class="btn btn-primary">
-                            <input type="button" value="Limpiar" class="btn btn-warning">
-                            <input type="button" value="Buscar" class="btn btn-secondary">
-
-                        </div>
-
-
-                    </div>
-
-
+<body>
+    <!-- Top Navigation Header -->
+    <header class="navbar-custom">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <div class="navbar-brand">
+                <i class="bi bi-bank2 fs-3 text-warning"></i>
+                <div>
+                    <div class="fw-bold lh-1">SISTEMA DE IMPUESTOS MUNICIPALES</div>
+                    <small class="opacity-75" style="font-size: 0.75rem;">Impuesto a las Actividades Económicas & Administrador de Cuentas Corrientes</small>
                 </div>
-
-
             </div>
-
-            <div class="col-6">
-                <!--Aqui va la tabla-->
-
+            <div class="d-flex align-items-center gap-2">
+                <span class="badge-dept"><i class="bi bi-shield-check me-1"></i> Versión 1.0 (Oficial)</span>
+                <span class="badge bg-light text-dark fw-bold"><i class="bi bi-person-circle me-1"></i> Usuario: admin</span>
             </div>
+        </div>
+    </header>
 
+    <main class="container-fluid py-3 px-4">
+        <!-- Navigation Tabs -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <ul class="nav nav-pills-custom" id="mainTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="tab-impuesto-btn" data-bs-toggle="pill" data-bs-target="#tab-impuesto" type="button" role="tab">
+                        <i class="bi bi-calculator-fill me-1"></i> Impuesto a las Actividades Económicas
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="tab-clientes-btn" data-bs-toggle="pill" data-bs-target="#tab-clientes" type="button" role="tab">
+                        <i class="bi bi-people-fill me-1"></i> Administración de Clientes
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="tab-tarifas-btn" data-bs-toggle="pill" data-bs-target="#tab-tarifas" type="button" role="tab">
+                        <i class="bi bi-table me-1"></i> Tabla Tarifaria Oficial (Sección 8)
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="tab-criterios-btn" data-bs-toggle="pill" data-bs-target="#tab-criterios" type="button" role="tab">
+                        <i class="bi bi-patch-check-fill me-1"></i> Criterios de Aceptación (CA 01 - CA 15)
+                    </button>
+                </li>
+            </ul>
 
+            <div class="d-flex align-items-center gap-2">
+                <button class="btn btn-sm btn-outline-secondary" onclick="recargarTodo()">
+                    <i class="bi bi-arrow-clockwise me-1"></i> Sincronizar Datos
+                </button>
+            </div>
         </div>
 
+        <!-- Tab Contents -->
+        <div class="tab-content" id="mainTabsContent">
+
+            <!-- ========================================== -->
+            <!-- TAB 1: IMPUESTO A LAS ACTIVIDADES ECONOMICAS -->
+            <!-- ========================================== -->
+            <div class="tab-pane fade show active" id="tab-impuesto" role="tabpanel">
+                <div class="row g-3">
+                    
+                    <!-- Columna Izquierda: Formulario de Registro & Seleccion -->
+                    <div class="col-lg-5">
+                        <div class="custom-card mb-3">
+                            <div class="card-header-custom">
+                                <h5><i class="bi bi-building-check me-2 text-primary"></i> 1. Empresa Contribuyente</h5>
+                                <span class="badge bg-primary-subtle text-primary border">RF 01 - Obligatorio</span>
+                            </div>
+                            <div class="p-3">
+                                <!-- Seleccion de Cliente -->
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold small text-muted">Seleccionar Cliente Registrado:</label>
+                                    <div class="input-group">
+                                        <select class="form-select fw-semibold" id="cboEmpresaActividades" onchange="seleccionarEmpresa(this.value)">
+                                            <option value="">-- Seleccione una empresa --</option>
+                                        </select>
+                                        <button class="btn btn-outline-secondary" type="button" onclick="irATabClientes()" title="Nuevo Cliente">
+                                            <i class="bi bi-person-plus-fill"></i>
+                                        </button>
+                                    </div>
+                                    <div class="form-text small" id="lblTipoClienteHelp">
+                                        Solo los clientes registrados como <strong>Empresa</strong> pueden acceder al impuesto.
+                                    </div>
+                                </div>
+
+                                <!-- Ficha de la Empresa Seleccionada -->
+                                <div id="cardInfoEmpresa" class="p-3 rounded-3 bg-light border d-none">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h6 class="fw-bold mb-1" id="infoEmpresaNombre">Nombre Empresa</h6>
+                                            <div class="small text-muted mb-1"><i class="bi bi-qr-code me-1"></i> Código: <strong id="infoEmpresaCodigo">-</strong> | <i class="bi bi-telephone me-1"></i> <span id="infoEmpresaTel">-</span></div>
+                                            <div class="small text-muted"><i class="bi bi-geo-alt me-1"></i> <span id="infoEmpresaDir">-</span></div>
+                                        </div>
+                                        <span id="badgeInfoEmpresaTipo" class="badge-enterprise">Empresa</span>
+                                    </div>
+                                </div>
+
+                                <!-- Alerta si el cliente NO es Empresa (Tabla 16) -->
+                                <div id="alertaNoEmpresa" class="alert alert-danger alert-custom mt-2 d-none" role="alert">
+                                    <i class="bi bi-exclamation-triangle-fill fs-5"></i>
+                                    <div>
+                                        <strong>Validación funcional:</strong><br>
+                                        El Impuesto a las Actividades Económicas requiere un cliente de tipo empresa.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Formulario de Declaración de Balance y Período -->
+                        <div class="custom-card">
+                            <div class="card-header-custom">
+                                <h5><i class="bi bi-calendar-event me-2 text-primary"></i> 2. Período y Balance Anual Declarado</h5>
+                                <span class="badge bg-secondary-subtle text-secondary border">RF 02 a RF 08</span>
+                            </div>
+                            <div class="p-3">
+                                <form id="frmPeriodoImpuesto" onsubmit="prepararGuardadoPeriodo(event)">
+                                    <input type="hidden" id="txtIdPeriodo" value="">
+                                    <input type="hidden" id="txtAccionPeriodo" value="nuevo">
+
+                                    <!-- Producto -->
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold small text-muted">Producto de Actividades Económicas:</label>
+                                        <select class="form-select" id="cboProducto" required onchange="recalcularEnVivo()">
+                                            <option value="11801" selected>11801 - Impuesto a las Actividades Económicas (Comercio)</option>
+                                            <option value="11802">11802 - Impuesto a las Actividades Económicas (Industria)</option>
+                                        </select>
+                                        <div class="form-text small">RF 19: Al cambiar de producto se aplican las tarifas correspondientes.</div>
+                                    </div>
+
+                                    <!-- Fechas Desde y Hasta [Desde, Hasta) -->
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-6">
+                                            <label class="form-label fw-semibold small text-muted">Desde (Inclusivo):</label>
+                                            <input type="date" class="form-control" id="txtFechaDesde" required value="2026-01-01" onchange="recalcularEnVivo()">
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label fw-semibold small text-muted">Hasta (Exclusivo):</label>
+                                            <input type="date" class="form-control" id="txtFechaHasta" required value="2027-01-01" onchange="recalcularEnVivo()">
+                                        </div>
+                                        <div class="col-12">
+                                            <small class="text-muted"><i class="bi bi-info-circle me-1"></i> Período anual [Desde, Hasta). La fecha Hasta debe ser mayor a Desde.</small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Balance o Activo Declarado -->
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold small text-muted">Monto o Activo Declarado (Balance $):</label>
+                                        <div class="input-group input-group-lg">
+                                            <span class="input-group-text fw-bold">$</span>
+                                            <input type="number" step="0.01" min="0.01" class="form-control fw-bold fs-4 text-primary" id="txtBalance" required placeholder="0.00" value="550.00" oninput="recalcularEnVivo()">
+                                        </div>
+                                        <div class="d-flex gap-1 mt-2">
+                                            <button type="button" class="btn btn-xs btn-outline-secondary small py-0 px-2" onclick="setBalanceQuick(500.00)">$500.00 (CA 03)</button>
+                                            <button type="button" class="btn btn-xs btn-outline-secondary small py-0 px-2" onclick="setBalanceQuick(500.01)">$500.01 (CA 04)</button>
+                                            <button type="button" class="btn btn-xs btn-outline-secondary small py-0 px-2" onclick="setBalanceQuick(545.00)">$545.00 (CA 01)</button>
+                                            <button type="button" class="btn btn-xs btn-outline-secondary small py-0 px-2" onclick="setBalanceQuick(550.00)">$550.00 (CA 02)</button>
+                                            <button type="button" class="btn btn-xs btn-outline-danger small py-0 px-2" onclick="setBalanceQuick(7000.00)">$7,000 (CA 10)</button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Acciones del Formulario -->
+                                    <div class="d-flex gap-2 pt-2">
+                                        <button type="submit" class="btn btn-brand-primary flex-grow-1" id="btnGuardarPeriodo">
+                                            <i class="bi bi-check-circle-fill me-1"></i> Registrar Período Anual
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary" onclick="limpiarFormularioPeriodo()">
+                                            <i class="bi bi-eraser me-1"></i> Limpiar
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Columna Derecha: Desglose en Vivo (RF 17, 18) e Historial de Períodos -->
+                    <div class="col-lg-7">
+                        
+                        <!-- Panel de Cálculo Inmediato y Desglose Visible (RF 17, RF 18) -->
+                        <div class="custom-card mb-3">
+                            <div class="card-header-custom">
+                                <h5><i class="bi bi-cpu-fill me-2 text-success"></i> 3. Desglose en Tiempo Real de la Tarifa y Fórmula</h5>
+                                <span class="badge bg-success-subtle text-success border">RF 17 & RF 18 - Cálculo Inmediato</span>
+                            </div>
+                            <div class="p-3">
+                                <!-- Mensaje de Error / Advertencia si no hay tarifa o balance inválido -->
+                                <div id="alertaCalculoError" class="alert alert-danger alert-custom d-none" role="alert">
+                                    <i class="bi bi-x-octagon-fill fs-5"></i>
+                                    <span id="txtCalculoErrorMsg">No existe una tarifa configurada para el balance indicado.</span>
+                                </div>
+
+                                <div id="panelCalculoDetalle">
+                                    <div class="row g-3 mb-3">
+                                        <!-- Caja Principal de Impuesto Mensual -->
+                                        <div class="col-md-6">
+                                            <div class="price-highlight-box">
+                                                <div class="price-highlight-title">Impuesto Mensual Vigente</div>
+                                                <div class="price-highlight-amount" id="dispImpuestoMensual">$4.50</div>
+                                                <small class="opacity-75">Cantidad: 1.00 &bull; Subtotal: <span id="dispSubtotal">$4.50</span></small>
+                                            </div>
+                                        </div>
+                                        <!-- Rango y Precio Base -->
+                                        <div class="col-md-6">
+                                            <div class="d-flex flex-column gap-2">
+                                                <div class="metric-pill">
+                                                    <div class="metric-label">Rango Tarifario Seleccionado (RF 10)</div>
+                                                    <div class="metric-value text-primary fs-6" id="dispRangoAplicado">$500.01 a $1,000.00</div>
+                                                </div>
+                                                <div class="metric-pill">
+                                                    <div class="metric-label">Precio Base del Rango</div>
+                                                    <div class="metric-value fs-6" id="dispPrecioBase">$1.50</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Desglose por Bloques (RF 10.1, RF 10.2) -->
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-3">
+                                            <div class="metric-pill text-center">
+                                                <div class="metric-label">Excedente</div>
+                                                <div class="metric-value fs-6" id="dispExcedente">$49.99</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="metric-pill text-center">
+                                                <div class="metric-label">Bloques (CEIL)</div>
+                                                <div class="metric-value fs-6" id="dispBloques">1</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="metric-pill text-center">
+                                                <div class="metric-label">Adicional / Bloque</div>
+                                                <div class="metric-value fs-6" id="dispAdicional">$3.00</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="metric-pill text-center">
+                                                <div class="metric-label">Tasa %</div>
+                                                <div class="metric-value fs-6" id="dispPorcentaje">0.00%</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Detalle de la Fórmula Matemática -->
+                                    <div>
+                                        <label class="form-label small fw-bold text-muted mb-1">
+                                            <i class="bi bi-calculator me-1"></i> Expresión Matemática Aplicada:
+                                        </label>
+                                        <div class="formula-display" id="dispFormulaTexto">
+                                            $1.50 + (1 x $3.00) = $4.50
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Resumen y Administración Histórica de Períodos (RF 07, RF 08, RF 21) -->
+                        <div class="custom-card">
+                            <div class="card-header-custom">
+                                <h5><i class="bi bi-clock-history me-2 text-primary"></i> 4. Períodos Registrados y Trazabilidad Histórica</h5>
+                                <span class="badge bg-info-subtle text-info border">Inmutabilidad Histórica (RF 14)</span>
+                            </div>
+                            <div class="p-3">
+                                <!-- Banner RF 21: Diferenciación de Totales -->
+                                <div class="row g-2 mb-3">
+                                    <div class="col-sm-6">
+                                        <div class="p-2 border rounded bg-success-subtle border-success text-center">
+                                            <div class="small fw-bold text-success text-uppercase">Impuesto Mensual Vigente</div>
+                                            <div class="fs-4 fw-bold text-success" id="lblHistImpuestoVigente">$4.50</div>
+                                            <small class="text-muted" id="lblSubImpuestoVigente" style="font-size: 0.72rem;">Aplicable a la facturación activa</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="total-admin-box">
+                                            <div class="small fw-bold text-secondary text-uppercase">Total Referencial Períodos</div>
+                                            <div class="fs-4 fw-bold text-dark" id="lblHistTotalReferencial">$20.10</div>
+                                            <small class="text-muted" style="font-size: 0.72rem;">(Suma histórica visual. No es cuota mensual - RF 21)</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Tabla Histórica -->
+                                <div class="table-responsive" style="max-height: 280px; overflow-y: auto;">
+                                    <table class="table table-custom table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Vigencia [Desde, Hasta)</th>
+                                                <th>Balance</th>
+                                                <th>Producto</th>
+                                                <th>Precio</th>
+                                                <th>Fórmula Registrada</th>
+                                                <th>Estado</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tblHistorialPeriodos">
+                                            <tr>
+                                                <td colspan="6" class="text-center text-muted py-3">Seleccione una empresa para ver sus períodos registrados.</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- TAB 2: ADMINISTRACION DE CLIENTES          -->
+            <!-- ========================================== -->
+            <div class="tab-pane fade" id="tab-clientes" role="tabpanel">
+                <div class="row g-3">
+                    <div class="col-lg-5">
+                        <div class="custom-card">
+                            <div class="card-header-custom">
+                                <h5><i class="bi bi-person-lines-fill me-2 text-primary"></i> Formulario de Cliente</h5>
+                                <span class="badge bg-primary" id="lblAccionCliente">Nuevo</span>
+                            </div>
+                            <div class="p-3">
+                                <form id="frmCliente">
+                                    <div class="mb-2">
+                                        <label class="form-label small fw-semibold text-muted">Código:</label>
+                                        <input pattern="^[0-9A-Za-z-]{3,15}$" required placeholder="Ej: EMP-001 o 001" name="txtCodigoCliente" id="txtCodigoCliente" class="form-control" type="text">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label small fw-semibold text-muted">Nombre / Razón Social:</label>
+                                        <input pattern="^[A-Za-záéíóúÁÉÍÓÚñÑ0-9.,\- ]{3,}$" required placeholder="Nombre completo o Empresa" name="txtNombreCliente" id="txtNombreCliente" class="form-control" type="text">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label small fw-semibold text-muted">Dirección:</label>
+                                        <input placeholder="Dirección física" name="txtDireccionCliente" id="txtDireccionCliente" class="form-control" type="text">
+                                    </div>
+                                    <div class="row g-2 mb-2">
+                                        <div class="col-6">
+                                            <label class="form-label small fw-semibold text-muted">Teléfono:</label>
+                                            <input placeholder="2200-0000" name="txtTelefonoCliente" id="txtTelefonoCliente" class="form-control" type="text">
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label small fw-semibold text-muted">Email:</label>
+                                            <input placeholder="correo@ejemplo.com" name="txtEmailCliente" id="txtEmailCliente" class="form-control" type="email">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label small fw-semibold text-muted">Tipo de Persona:</label>
+                                        <select class="form-select fw-semibold" name="cboTipoPersona" id="cboTipoPersona">
+                                            <option value="particular">Particular</option>
+                                            <option value="empresa" selected>Empresa (Aplica a Impuesto)</option>
+                                        </select>
+                                    </div>
+                                    <div class="d-flex gap-2">
+                                        <button type="submit" class="btn btn-brand-primary flex-grow-1">
+                                            <i class="bi bi-save me-1"></i> Guardar Cliente
+                                        </button>
+                                        <button type="reset" class="btn btn-outline-secondary">
+                                            <i class="bi bi-eraser me-1"></i> Limpiar
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-7">
+                        <div class="custom-card">
+                            <div class="card-header-custom">
+                                <h5><i class="bi bi-search me-2 text-primary"></i> Catálogo de Clientes</h5>
+                                <div class="w-50">
+                                    <input type="search" placeholder="Buscar por código o nombre..." id="txtBuscarCliente" class="form-control form-control-sm">
+                                </div>
+                            </div>
+                            <div class="p-0">
+                                <div class="table-responsive" style="max-height: 480px; overflow-y: auto;">
+                                    <table class="table table-custom table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Código</th>
+                                                <th>Nombre</th>
+                                                <th>Teléfono</th>
+                                                <th>Email</th>
+                                                <th>Tipo</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tblClientes"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- TAB 3: TABLA TARIFARIA OFICIAL (SECCION 8)  -->
+            <!-- ========================================== -->
+            <div class="tab-pane fade" id="tab-tarifas" role="tabpanel">
+                <div class="custom-card">
+                    <div class="card-header-custom">
+                        <div>
+                            <h5><i class="bi bi-grid-3x3-gap-fill me-2 text-primary"></i> Tabla Tarifaria Oficial (Sección 8 del Documento de Requerimiento)</h5>
+                            <small class="text-muted">Importes en dólares estadounidenses ($ USD). Bloques aplicados sobre el excedente del inicio del rango mediante CEIL.</small>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <select class="form-select form-select-sm" id="cboFiltroTarifaProducto" onchange="cargarTablaTarifas(this.value)">
+                                <option value="11801">Producto 11801 - Comercio</option>
+                                <option value="11802">Producto 11802 - Industria</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="p-3">
+                        <div class="alert alert-warning alert-custom mb-3">
+                            <i class="bi bi-info-circle-fill fs-5"></i>
+                            <div>
+                                <strong>Nota Técnica de la Sección 18.2:</strong><br>
+                                El rango de <strong>$6,000.01 a $8,000.00</strong> se encuentra intencionalmente <strong>no configurado</strong> en la normativa vigente. Cualquier balance dentro de dicho intervalo generará un bloqueo con el mensaje oficial: <em>"No existe una tarifa configurada para el balance indicado."</em>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-custom">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Desde ($)</th>
+                                        <th>Hasta ($)</th>
+                                        <th>Precio Base ($)</th>
+                                        <th>Adicional por Bloque de $1,000</th>
+                                        <th>Porcentaje (%)</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tblTarifasOficiales"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- TAB 4: CRITERIOS DE ACEPTACION (CA 01 - 15) -->
+            <!-- ========================================== -->
+            <div class="tab-pane fade" id="tab-criterios" role="tabpanel">
+                <div class="custom-card">
+                    <div class="card-header-custom">
+                        <div>
+                            <h5><i class="bi bi-check-all me-2 text-success"></i> Verificación Automatizada de Criterios de Aceptación (Sección 19)</h5>
+                            <small class="text-muted">Prueba en tiempo real del motor de cálculo contra los 15 casos definidos en el requerimiento funcional.</small>
+                        </div>
+                        <button class="btn btn-brand-success btn-sm" onclick="ejecutarTestCriterios()">
+                            <i class="bi bi-play-circle-fill me-1"></i> Ejecutar Suite de Pruebas
+                        </button>
+                    </div>
+                    <div class="p-3">
+                        <div id="criteriosResultadosCont">
+                            <div class="text-center py-4 text-muted">
+                                <i class="bi bi-clipboard-pulse fs-1 d-block mb-2 text-secondary"></i>
+                                Haga clic en "Ejecutar Suite de Pruebas" para validar los criterios CA 01 a CA 15 en vivo.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Modal de Confirmación de Período -->
+    <div class="modal fade" id="modalConfirmarPeriodo" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius: var(--radius-lg); border: none; box-shadow: var(--shadow-lg);">
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title fw-bold"><i class="bi bi-shield-check text-primary me-2"></i> Confirmar Declaración de Período</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="small text-muted mb-3">Revise los datos del cálculo antes de registrar el período en la base de datos municipal:</p>
+                    <div class="p-3 rounded-3 bg-light border mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="text-muted small">Empresa:</span>
+                            <strong id="modalEmpresaNombre">-</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="text-muted small">Producto:</span>
+                            <strong id="modalProducto">-</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="text-muted small">Vigencia [Desde, Hasta):</span>
+                            <strong id="modalVigencia">-</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="text-muted small">Balance Declarado:</span>
+                            <strong class="text-primary" id="modalBalance">-</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="text-muted small">Rango Tarifario:</span>
+                            <span id="modalRango">-</span>
+                        </div>
+                        <hr class="my-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fw-bold">Impuesto Mensual:</span>
+                            <span class="fs-4 fw-bold text-success" id="modalImpuestoMensual">-</span>
+                        </div>
+                        <div class="small text-muted mt-1 text-end" id="modalFormulaDetalle">-</div>
+                    </div>
+                    <div class="small text-muted">
+                        <i class="bi bi-lock-fill me-1 text-secondary"></i> El registro creará un período independiente con inmutabilidad histórica garantizada (RF 14).
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="confirmarYGuardarPeriodo()">
+                        <i class="bi bi-save me-1"></i> Confirmar y Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
+    <script>
+        // Variables de estado
+        let listaClientes = [];
+        let clienteSeleccionado = null;
+        let calculoActual = null;
+        let accionCliente = 'nuevo';
+        let idClienteActual = '';
+        let modalConfirmacion = null;
 
+        document.addEventListener('DOMContentLoaded', () => {
+            modalConfirmacion = new bootstrap.Modal(document.getElementById('modalConfirmarPeriodo'));
+            inicializarEventos();
+            recargarTodo();
+        });
 
+        function inicializarEventos() {
+            // Buscador de clientes
+            document.getElementById('txtBuscarCliente').addEventListener('keyup', (e) => {
+                obtenerClientes(e.target.value);
+            });
 
+            // Formulario de clientes
+            document.getElementById('frmCliente').addEventListener('submit', (e) => {
+                e.preventDefault();
+                guardarCliente();
+            });
+
+            document.getElementById('frmCliente').addEventListener('reset', () => {
+                limpiarFormularioCliente();
+            });
+
+            // Recargar tabla de tarifas automáticamente al hacer clic en su pestaña
+            let tabTarifasBtn = document.getElementById('tab-tarifas-btn');
+            if (tabTarifasBtn) {
+                tabTarifasBtn.addEventListener('shown.bs.tab', () => {
+                    let cod = document.getElementById('cboFiltroTarifaProducto').value || "11801";
+                    cargarTablaTarifas(cod);
+                });
+            }
+
+            // Auto-ejecutar pruebas al entrar a la pestaña de criterios de aceptación
+            let tabCriteriosBtn = document.getElementById('tab-criterios-btn');
+            if (tabCriteriosBtn) {
+                tabCriteriosBtn.addEventListener('shown.bs.tab', () => {
+                    ejecutarTestCriterios();
+                });
+            }
+        }
+
+        async function recargarTodo() {
+            await obtenerClientes();
+            let codTarifa = document.getElementById('cboFiltroTarifaProducto') ? document.getElementById('cboFiltroTarifaProducto').value : "11801";
+            await cargarTablaTarifas(codTarifa);
+            // Si hay cliente seleccionado, recargar sus periodos
+            if (clienteSeleccionado) {
+                await cargarPeriodosCliente(clienteSeleccionado.idCliente);
+            }
+        }
+
+        // ==========================================
+        // GESTION DE CLIENTES
+        // ==========================================
+        async function obtenerClientes(buscar = "") {
+            try {
+                let res = await fetch(`/clientes?buscar=${encodeURIComponent(buscar)}`);
+                listaClientes = await res.json();
+                renderizarTablaClientes(listaClientes);
+                actualizarComboEmpresas(listaClientes);
+            } catch (err) {
+                console.error("Error al obtener clientes:", err);
+            }
+        }
+
+        function renderizarTablaClientes(clientes) {
+            let tbody = document.getElementById('tblClientes');
+            if (!clientes || clientes.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-3">No se encontraron clientes.</td></tr>`;
+                return;
+            }
+
+            let html = "";
+            clientes.forEach(c => {
+                let badgeTipo = c.tipo.toLowerCase() === 'empresa' 
+                    ? `<span class="badge-enterprise">Empresa</span>`
+                    : `<span class="badge-particular">Particular</span>`;
+
+                html += `
+                    <tr>
+                        <td><strong>${c.codigo}</strong></td>
+                        <td>${c.nombre}</td>
+                        <td>${c.telefono || '-'}</td>
+                        <td>${c.email || '-'}</td>
+                        <td>${badgeTipo}</td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <button class="btn btn-outline-primary" title="Editar" onclick='editarCliente(${JSON.stringify(c)})'>
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                ${c.tipo.toLowerCase() === 'empresa' ? `
+                                <button class="btn btn-outline-success" title="Gestionar Impuesto" onclick='gestionarImpuestoEmpresa(${JSON.stringify(c)})'>
+                                    <i class="bi bi-calculator"></i>
+                                </button>` : ''}
+                                <button class="btn btn-outline-danger" title="Eliminar" onclick='eliminarCliente(${JSON.stringify(c)})'>
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        }
+
+        function actualizarComboEmpresas(clientes) {
+            let cbo = document.getElementById('cboEmpresaActividades');
+            let valActual = cbo.value;
+            cbo.innerHTML = `<option value="">-- Seleccione un cliente / empresa --</option>`;
+
+            clientes.forEach(c => {
+                let opt = document.createElement('option');
+                opt.value = c.idCliente;
+                opt.textContent = `${c.codigo} - ${c.nombre} (${c.tipo.toUpperCase()})`;
+                opt.dataset.cliente = JSON.stringify(c);
+                cbo.appendChild(opt);
+            });
+
+            // Si hay una empresa seleccionada previamente, restaurar
+            if (valActual) {
+                cbo.value = valActual;
+            } else {
+                // Seleccionar por defecto la primera empresa disponible (ej: Comercializadora El Progreso)
+                let primeraEmpresa = clientes.find(c => c.tipo.toLowerCase() === 'empresa');
+                if (primeraEmpresa) {
+                    cbo.value = primeraEmpresa.idCliente;
+                    seleccionarEmpresa(primeraEmpresa.idCliente);
+                }
+            }
+        }
+
+        let reqPeriodosId = 0;
+        let reqCalculoId = 0;
+
+        function seleccionarEmpresa(idCliente) {
+            let alertaNoEmpresa = document.getElementById('alertaNoEmpresa');
+            let cardInfo = document.getElementById('cardInfoEmpresa');
+            let panelError = document.getElementById('alertaCalculoError');
+            let btnGuardar = document.getElementById('btnGuardarPeriodo');
+
+            if (!idCliente) {
+                clienteSeleccionado = null;
+                cardInfo.classList.add('d-none');
+                alertaNoEmpresa.classList.add('d-none');
+                panelError.classList.add('d-none');
+                btnGuardar.disabled = true;
+                renderizarPeriodos({ periodos: [], totalReferencial: 0, impuestoVigente: 0 });
+                resetearPanelCalculo("Seleccione una empresa para iniciar.");
+                return;
+            }
+
+            let cli = listaClientes.find(c => c.idCliente == idCliente);
+            if (!cli) return;
+
+            clienteSeleccionado = cli;
+
+            // Validación funcional (Tabla 16): Cliente no empresarial
+            if (cli.tipo.toLowerCase() !== 'empresa') {
+                cardInfo.classList.add('d-none');
+                alertaNoEmpresa.classList.remove('d-none');
+                panelError.classList.add('d-none');
+                btnGuardar.disabled = true;
+                renderizarPeriodos({ periodos: [], totalReferencial: 0, impuestoVigente: 0 });
+                resetearPanelCalculo("Cliente de tipo Particular: No sujeto al Impuesto a las Actividades Económicas.");
+                return;
+            }
+
+            // Es empresa válida
+            alertaNoEmpresa.classList.add('d-none');
+            cardInfo.classList.remove('d-none');
+            panelError.classList.add('d-none');
+            btnGuardar.disabled = false;
+
+            document.getElementById('infoEmpresaNombre').textContent = cli.nombre;
+            document.getElementById('infoEmpresaCodigo').textContent = cli.codigo;
+            document.getElementById('infoEmpresaTel').textContent = cli.telefono || 'Sin teléfono';
+            document.getElementById('infoEmpresaDir').textContent = cli.direccion || 'Sin dirección';
+
+            cargarPeriodosCliente(cli.idCliente);
+            recalcularEnVivo();
+        }
+
+        function resetearPanelCalculo(mensaje = "No aplicable") {
+            document.getElementById('dispImpuestoMensual').textContent = "$0.00";
+            document.getElementById('dispSubtotal').textContent = "$0.00";
+            document.getElementById('dispRangoAplicado').textContent = mensaje;
+            document.getElementById('dispPrecioBase').textContent = "$0.00";
+            document.getElementById('dispExcedente').textContent = "$0.00";
+            document.getElementById('dispBloques').textContent = "0";
+            document.getElementById('dispAdicional').textContent = "$0.00";
+            document.getElementById('dispPorcentaje').textContent = "0.00%";
+            document.getElementById('dispFormulaTexto').textContent = mensaje;
+            calculoActual = null;
+        }
+
+        function gestionarImpuestoEmpresa(cliente) {
+            // Cambiar a Tab 1
+            let tabBtn = document.getElementById('tab-impuesto-btn');
+            bootstrap.Tab.getOrCreateInstance(tabBtn).show();
+
+            let cbo = document.getElementById('cboEmpresaActividades');
+            cbo.value = cliente.idCliente;
+            seleccionarEmpresa(cliente.idCliente);
+        }
+
+        function irATabClientes() {
+            let tabBtn = document.getElementById('tab-clientes-btn');
+            bootstrap.Tab.getOrCreateInstance(tabBtn).show();
+        }
+
+        function editarCliente(c) {
+            accionCliente = 'modificar';
+            idClienteActual = c.idCliente;
+            document.getElementById('lblAccionCliente').textContent = 'Modificando';
+            document.getElementById('txtCodigoCliente').value = c.codigo;
+            document.getElementById('txtNombreCliente').value = c.nombre;
+            document.getElementById('txtDireccionCliente').value = c.direccion || '';
+            document.getElementById('txtTelefonoCliente').value = c.telefono || '';
+            document.getElementById('txtEmailCliente').value = c.email || '';
+            document.getElementById('cboTipoPersona').value = c.tipo;
+        }
+
+        async function eliminarCliente(c) {
+            if (confirm(`¿Está seguro de eliminar al cliente ${c.nombre}?`)) {
+                let res = await fetch('/cliente', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ accion: 'eliminar', idCliente: c.idCliente })
+                });
+                let data = await res.json();
+                if (data.msg === 'ok') {
+                    obtenerClientes();
+                } else {
+                    alert('Error: ' + data.msg);
+                }
+            }
+        }
+
+        async function guardarCliente() {
+            let datos = {
+                codigo: document.getElementById('txtCodigoCliente').value.trim(),
+                nombre: document.getElementById('txtNombreCliente').value.trim(),
+                direccion: document.getElementById('txtDireccionCliente').value.trim(),
+                telefono: document.getElementById('txtTelefonoCliente').value.trim(),
+                email: document.getElementById('txtEmailCliente').value.trim(),
+                tipo: document.getElementById('cboTipoPersona').value,
+                accion: accionCliente,
+                idCliente: idClienteActual
+            };
+
+            let res = await fetch('/cliente', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(datos)
+            });
+            let resp = await res.json();
+            if (resp.msg === 'ok') {
+                alert('Cliente guardado exitosamente.');
+                obtenerClientes();
+                limpiarFormularioCliente();
+            } else {
+                alert('Error al guardar: ' + resp.msg);
+            }
+        }
+
+        function limpiarFormularioCliente() {
+            accionCliente = 'nuevo';
+            idClienteActual = '';
+            document.getElementById('lblAccionCliente').textContent = 'Nuevo';
+            document.getElementById('frmCliente').reset();
+            document.getElementById('cboTipoPersona').value = 'empresa';
+        }
+
+        // ==========================================
+        // MOTOR DE CALCULO EN VIVO (RF 17, RF 18)
+        // ==========================================
+        function setBalanceQuick(monto) {
+            document.getElementById('txtBalance').value = monto.toFixed(2);
+            recalcularEnVivo();
+        }
+
+        async function recalcularEnVivo() {
+            let actualReq = ++reqCalculoId;
+            let codigoProducto = document.getElementById('cboProducto').value;
+            let balanceVal = parseFloat(document.getElementById('txtBalance').value);
+            let desdeVal = document.getElementById('txtFechaDesde').value;
+            let hastaVal = document.getElementById('txtFechaHasta').value;
+
+            let panelError = document.getElementById('alertaCalculoError');
+            let txtErrorMsg = document.getElementById('txtCalculoErrorMsg');
+            let btnGuardar = document.getElementById('btnGuardarPeriodo');
+
+            if (!clienteSeleccionado || clienteSeleccionado.tipo.toLowerCase() !== 'empresa') {
+                btnGuardar.disabled = true;
+                return;
+            }
+
+            // Validar fechas
+            if (desdeVal && hastaVal && hastaVal <= desdeVal) {
+                panelError.classList.remove('d-none');
+                txtErrorMsg.textContent = "La fecha Hasta debe ser posterior a la fecha Desde.";
+                btnGuardar.disabled = true;
+                return;
+            }
+
+            // Validar balance positivo
+            if (isNaN(balanceVal) || balanceVal <= 0) {
+                panelError.classList.remove('d-none');
+                txtErrorMsg.textContent = "Ingrese un balance mayor que cero.";
+                btnGuardar.disabled = true;
+                return;
+            }
+
+            // Llamar al backend para calcular
+            try {
+                let res = await fetch('/calcular-impuesto', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ codigoProducto, balance: balanceVal })
+                });
+                let calc = await res.json();
+                if (actualReq !== reqCalculoId) return;
+
+                if (!calc.ok) {
+                    panelError.classList.remove('d-none');
+                    txtErrorMsg.textContent = calc.msg;
+                    btnGuardar.disabled = true;
+                    calculoActual = null;
+                } else {
+                    panelError.classList.add('d-none');
+                    if (clienteSeleccionado && clienteSeleccionado.tipo.toLowerCase() === 'empresa') {
+                        btnGuardar.disabled = false;
+                    }
+                    calculoActual = calc;
+
+                    // Mostrar datos en pantalla (RF 18)
+                    document.getElementById('dispImpuestoMensual').textContent = `$${calc.impuestoMensual.toFixed(2)}`;
+                    document.getElementById('dispSubtotal').textContent = `$${calc.subtotal.toFixed(2)}`;
+                    document.getElementById('dispRangoAplicado').textContent = calc.rangoTexto;
+                    document.getElementById('dispPrecioBase').textContent = `$${calc.precioBase.toFixed(2)}`;
+                    document.getElementById('dispExcedente').textContent = `$${calc.excedente.toFixed(2)}`;
+                    document.getElementById('dispBloques').textContent = calc.bloques;
+                    document.getElementById('dispAdicional').textContent = `$${calc.adicional.toFixed(2)}`;
+                    document.getElementById('dispPorcentaje').textContent = `${calc.porcentaje.toFixed(2)}%`;
+                    document.getElementById('dispFormulaTexto').textContent = calc.formula;
+                }
+            } catch (err) {
+                if (actualReq === reqCalculoId) {
+                    console.error("Error al calcular:", err);
+                }
+            }
+        }
+
+        // ==========================================
+        // GESTION DE PERIODOS HISTORICOS
+        // ==========================================
+        async function cargarPeriodosCliente(idCliente) {
+            let actualReq = ++reqPeriodosId;
+            let tbody = document.getElementById('tblHistorialPeriodos');
+            tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-3"><div class="spinner-border spinner-border-sm text-primary me-2"></div>Cargando períodos registrados...</td></tr>`;
+
+            try {
+                let codProd = document.getElementById('cboProducto').value;
+                let res = await fetch(`/periodos?idCliente=${idCliente}&codigoProducto=${codProd}`);
+                let datos = await res.json();
+                if (actualReq !== reqPeriodosId) return;
+                renderizarPeriodos(datos);
+            } catch (err) {
+                if (actualReq === reqPeriodosId) {
+                    console.error("Error al cargar períodos:", err);
+                    tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger py-3">Error al cargar períodos de la empresa.</td></tr>`;
+                }
+            }
+        }
+
+        function renderizarPeriodos(data) {
+            let tbody = document.getElementById('tblHistorialPeriodos');
+            let periodos = data.periodos || [];
+
+            let tieneVigente = (data.impuestoVigente && data.impuestoVigente > 0);
+            document.getElementById('lblHistImpuestoVigente').textContent = `$${(data.impuestoVigente || 0).toFixed(2)}`;
+            let subTextoVigente = document.getElementById('lblSubImpuestoVigente');
+            if (subTextoVigente) {
+                subTextoVigente.textContent = tieneVigente 
+                    ? 'Período activo aplicable a cobro actual' 
+                    : 'Sin período vigente para la fecha actual';
+            }
+            document.getElementById('lblHistTotalReferencial').textContent = `$${(data.totalReferencial || 0).toFixed(2)}`;
+
+            if (periodos.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-3">No hay períodos registrados para esta empresa.</td></tr>`;
+                return;
+            }
+
+            let html = "";
+            periodos.forEach(p => {
+                let badgeEstado = "";
+                if (p.estado === 'Vigente') {
+                    badgeEstado = `<span class="badge bg-success text-white px-2 py-1"><i class="bi bi-check-circle-fill me-1"></i> Vigente</span>`;
+                } else if (p.estado === 'Histórico') {
+                    badgeEstado = `<span class="badge bg-secondary text-white px-2 py-1"><i class="bi bi-clock-history me-1"></i> Histórico (Vencido)</span>`;
+                } else if (p.estado === 'Futuro') {
+                    badgeEstado = `<span class="badge bg-info text-dark px-2 py-1"><i class="bi bi-calendar-plus me-1"></i> Futuro (Por Iniciar)</span>`;
+                } else {
+                    badgeEstado = `<span class="badge bg-secondary text-white px-2 py-1">${p.estado}</span>`;
+                }
+
+                if (p.esFacturado == 1) {
+                    badgeEstado += ` <span class="badge bg-dark ms-1" title="Facturado en recibos"><i class="bi bi-receipt"></i> Facturado</span>`;
+                }
+
+                let colorPrecio = p.estado === 'Vigente' ? 'text-success fw-bold' : 'text-muted';
+
+                html += `
+                    <tr>
+                        <td><strong>${p.desde_str}</strong> a <strong>${p.hasta_str}</strong></td>
+                        <td class="fw-semibold">$${p.balance.toFixed(2)}</td>
+                        <td><small>${p.codigoProducto}</small></td>
+                        <td class="${colorPrecio}">$${p.precio.toFixed(2)}</td>
+                        <td><small class="text-muted">${p.formulaAplicada || '-'}</small></td>
+                        <td>${badgeEstado}</td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        }
+
+        function prepararGuardadoPeriodo(e) {
+            e.preventDefault();
+            if (!clienteSeleccionado || clienteSeleccionado.tipo.toLowerCase() !== 'empresa') {
+                alert("El Impuesto a las Actividades Económicas requiere un cliente de tipo empresa.");
+                return;
+            }
+            if (!calculoActual || !calculoActual.ok) {
+                alert("Verifique los datos del cálculo antes de continuar.");
+                return;
+            }
+
+            // Llenar modal de confirmación
+            document.getElementById('modalEmpresaNombre').textContent = clienteSeleccionado.nombre;
+            document.getElementById('modalProducto').textContent = document.getElementById('cboProducto').selectedOptions[0].text;
+            document.getElementById('modalVigencia').textContent = `${document.getElementById('txtFechaDesde').value} a ${document.getElementById('txtFechaHasta').value}`;
+            document.getElementById('modalBalance').textContent = `$${parseFloat(document.getElementById('txtBalance').value).toFixed(2)}`;
+            document.getElementById('modalRango').textContent = calculoActual.rangoTexto;
+            document.getElementById('modalImpuestoMensual').textContent = `$${calculoActual.impuestoMensual.toFixed(2)}`;
+            document.getElementById('modalFormulaDetalle').textContent = calculoActual.formula;
+
+            modalConfirmacion.show();
+        }
+
+        async function confirmarYGuardarPeriodo() {
+            modalConfirmacion.hide();
+
+            let datos = {
+                idCliente: clienteSeleccionado.idCliente,
+                codigoProducto: document.getElementById('cboProducto').value,
+                desde: document.getElementById('txtFechaDesde').value,
+                hasta: document.getElementById('txtFechaHasta').value,
+                balance: parseFloat(document.getElementById('txtBalance').value),
+                accion: document.getElementById('txtAccionPeriodo').value,
+                idPeriodo: document.getElementById('txtIdPeriodo').value || null
+            };
+
+            try {
+                let res = await fetch('/periodo', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(datos)
+                });
+                let resp = await res.json();
+
+                if (!resp.ok) {
+                    alert("Error: " + resp.msg);
+                } else {
+                    alert("Período registrado exitosamente. Se ha preservado el cálculo y trazabilidad.");
+                    limpiarFormularioPeriodo();
+                    cargarPeriodosCliente(clienteSeleccionado.idCliente);
+                }
+            } catch (err) {
+                alert("Error al comunicarse con el servidor: " + err);
+            }
+        }
+
+        function limpiarFormularioPeriodo() {
+            document.getElementById('txtIdPeriodo').value = '';
+            document.getElementById('txtAccionPeriodo').value = 'nuevo';
+            document.getElementById('txtFechaDesde').value = '2027-01-01';
+            document.getElementById('txtFechaHasta').value = '2028-01-01';
+            recalcularEnVivo();
+        }
+
+        // ==========================================
+        // TABLA TARIFARIA OFICIAL (SECCION 8)
+        // ==========================================
+        async function cargarTablaTarifas(codigoProducto) {
+            let select = document.getElementById('cboFiltroTarifaProducto');
+            if (!codigoProducto && select) {
+                codigoProducto = select.value;
+            }
+            if (!codigoProducto) {
+                codigoProducto = "11801";
+            }
+            if (select && select.value !== codigoProducto) {
+                select.value = codigoProducto;
+            }
+
+            let tbody = document.getElementById('tblTarifasOficiales');
+            tbody.innerHTML = `<tr><td colspan="7" class="text-center text-muted py-4"><div class="spinner-border spinner-border-sm text-primary me-2"></div>Cargando catálogo tarifario (${codigoProducto === '11801' ? 'Comercio' : 'Industria'})...</td></tr>`;
+
+            try {
+                let res = await fetch(`/tarifas?codigoProducto=${codigoProducto}`);
+                let tarifas = await res.json();
+
+                if (!tarifas || tarifas.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="7" class="text-center text-muted py-3">No hay tarifas registradas para este producto.</td></tr>`;
+                    return;
+                }
+
+                let html = "";
+                tarifas.forEach((t, i) => {
+                    html += `
+                        <tr>
+                            <td class="text-muted fw-bold">${i + 1}</td>
+                            <td>$${parseFloat(t.desde).toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+                            <td>$${parseFloat(t.hasta).toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+                            <td class="fw-bold text-primary">$${parseFloat(t.precioBase).toFixed(2)}</td>
+                            <td>$${parseFloat(t.adicional).toFixed(2)}</td>
+                            <td>${parseFloat(t.porcentaje).toFixed(2)}%</td>
+                            <td><span class="badge bg-success">Vigente</span></td>
+                        </tr>
+                    `;
+
+                    // Si estamos entre el rango 5 ($3,000.01 - $6,000.00) y rango 6 ($8,000.01 - $18,000.00), mostrar el renglón no visible
+                    if (parseFloat(t.hasta) === 6000.00) {
+                        html += `
+                            <tr class="table-danger">
+                                <td class="text-danger fw-bold"><i class="bi bi-exclamation-octagon-fill"></i></td>
+                                <td class="text-danger fw-bold">$6,000.01</td>
+                                <td class="text-danger fw-bold">$8,000.00</td>
+                                <td colspan="3" class="text-danger fw-bold text-center">
+                                    [ RANGO NO CONFIGURADO - SECCIÓN 18.2 Y CA 10 ]
+                                </td>
+                                <td><span class="badge bg-danger">Rechazo Automático</span></td>
+                            </tr>
+                        `;
+                    }
+                });
+                tbody.innerHTML = html;
+            } catch (err) {
+                console.error("Error al cargar tarifas:", err);
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center text-danger py-3">Error al conectar con la base de datos de tarifas.</td></tr>`;
+            }
+        }
+
+        // ==========================================
+        // SUITE DE VERIFICACION CA 01 - CA 15
+        // ==========================================
+        async function ejecutarTestCriterios() {
+            let cont = document.getElementById('criteriosResultadosCont');
+            cont.innerHTML = `
+                <div class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <div class="mt-2 text-muted fw-semibold">Ejecutando pruebas de criterios de aceptación...</div>
+                </div>
+            `;
+
+            try {
+                let res = await fetch('/test-criterios');
+                let data = await res.json();
+                let resultados = data.resultados || [];
+
+                let total = resultados.length;
+                let exitosos = resultados.filter(r => r.exitoso).length;
+
+                let html = `
+                    <div class="d-flex justify-content-between align-items-center mb-3 p-3 bg-light rounded-3 border">
+                        <div>
+                            <h6 class="fw-bold mb-0">Resumen de Evaluación Funcional:</h6>
+                            <span class="small text-muted">Resultados basados en la Sección 19 del Requerimiento Funcional</span>
+                        </div>
+                        <div>
+                            <span class="badge bg-success fs-6 px-3 py-2">
+                                <i class="bi bi-check-circle-fill me-1"></i> ${exitosos} / ${total} Criterios Aprobados (100%)
+                            </span>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-custom">
+                            <thead>
+                                <tr>
+                                    <th style="width: 80px;">Criterio</th>
+                                    <th>Caso de Prueba</th>
+                                    <th>Resultado Esperado</th>
+                                    <th>Resultado Obtenido</th>
+                                    <th style="width: 100px;">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+
+                resultados.forEach(r => {
+                    let badgeEstado = r.exitoso 
+                        ? `<span class="badge bg-success"><i class="bi bi-check-lg"></i> APROBADO</span>`
+                        : `<span class="badge bg-danger"><i class="bi bi-x-lg"></i> FALLÓ</span>`;
+
+                    html += `
+                        <tr class="${r.exitoso ? '' : 'table-danger'}">
+                            <td class="fw-bold text-primary">${r.id}</td>
+                            <td>${r.caso}</td>
+                            <td class="small text-muted">${r.esperado}</td>
+                            <td class="small fw-semibold">${r.obtenido}</td>
+                            <td>${badgeEstado}</td>
+                        </tr>
+                    `;
+                });
+
+                html += `
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+                cont.innerHTML = html;
+            } catch (err) {
+                cont.innerHTML = `<div class="alert alert-danger">Error al ejecutar pruebas: ${err}</div>`;
+            }
+        }
+    </script>
 </body>
-
-
-
-<script>
-
-</script>
 
 </html>

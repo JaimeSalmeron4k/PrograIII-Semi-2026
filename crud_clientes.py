@@ -4,28 +4,37 @@ import conexion
 db = conexion.Conexion()
 
 class crud_clientes:
-    def consultar(self, buscar):
-        return db.consultar(f"SELECT * FROM clientes WHERE nombre LIKE '%{buscar}%'")
+    def consultar(self, buscar=""):
+        if buscar:
+            sql = "SELECT * FROM clientes WHERE nombre LIKE %s OR codigo LIKE %s ORDER BY idCliente DESC"
+            val = (f"%{buscar}%", f"%{buscar}%")
+            return db.consultar(sql, val)
+        else:
+            return db.consultar("SELECT * FROM clientes ORDER BY idCliente DESC")
+
+    def consultar_por_id(self, idCliente):
+        res = db.consultar("SELECT * FROM clientes WHERE idCliente = %s", (idCliente,))
+        return res[0] if res else None
 
     def administrar(self, datos):
         try:
-            if datos['accion']=='nuevo':
+            if datos['accion'] == 'nuevo':
                 sql = """
-                    INSERT INTO clientes(codigo,nombre,direccion,telefono,email,tipo)
-                    VALUES(%s,%s,%s,%s,%s,%s)
+                    INSERT INTO clientes(codigo, nombre, direccion, telefono, email, tipo)
+                    VALUES(%s, %s, %s, %s, %s, %s)
                 """
-                valores = (datos['codigo'],datos['nombre'],datos['direccion'],datos['telefono'],datos['email'],datos['tipo'])
-            elif datos['accion']=='modificar':
+                valores = (datos['codigo'], datos['nombre'], datos['direccion'], datos['telefono'], datos['email'], datos['tipo'])
+            elif datos['accion'] == 'modificar':
                 sql = """
-                    UPDATE clientes SET codigo=%s,nombre=%s,direccion=%s,telefono=%s,email=%s,tipo=%s
+                    UPDATE clientes SET codigo=%s, nombre=%s, direccion=%s, telefono=%s, email=%s, tipo=%s
                     WHERE idCliente=%s
                 """
-                valores = (datos['codigo'],datos['nombre'],datos['direccion'],datos['telefono'],datos['email'],datos['tipo'],datos['idCliente'])
+                valores = (datos['codigo'], datos['nombre'], datos['direccion'], datos['telefono'], datos['email'], datos['tipo'], datos['idCliente'])
             else:
                 sql = """
                     DELETE FROM clientes WHERE idCliente=%s
                 """
                 valores = (datos['idCliente'],)
-            return db.ejecutar(sql,valores)
+            return db.ejecutar(sql, valores)
         except Error as e:
             return f"Error al guardar el cliente: {e}"
