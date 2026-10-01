@@ -1310,9 +1310,13 @@
         function limpiarFormularioPeriodo() {
             document.getElementById('txtIdPeriodo').value = '';
             document.getElementById('txtAccionPeriodo').value = 'nuevo';
-            document.getElementById('txtFechaDesde').value = '2027-01-01';
-            document.getElementById('txtFechaHasta').value = '2028-01-01';
-            recalcularEnVivo();
+            document.getElementById('txtBalance').value = '';
+            document.getElementById('txtFechaDesde').value = '2026-01-01';
+            document.getElementById('txtFechaHasta').value = '2027-01-01';
+            document.getElementById('btnGuardarPeriodo').innerHTML = '<i class="bi bi-check-circle-fill me-1"></i> Registrar Período Anual';
+            document.getElementById('btnGuardarPeriodo').disabled = true;
+            document.getElementById('alertaCalculoError').classList.add('d-none');
+            resetearPanelCalculo("Ingrese un balance para calcular el impuesto.");
         }
 
         // ==========================================
