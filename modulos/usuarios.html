@@ -1,0 +1,172 @@
+<div class="card shadow-sm border-0 rounded-4 overflow-hidden animate-fade-in">
+    <div class="card-header bg-gradient-primary text-white d-flex flex-wrap justify-content-between align-items-center py-3 px-4 border-0">
+        <div>
+            <h5 class="mb-0 fw-bold d-flex align-items-center gap-2">
+                <i class="bi bi-people-fill"></i>
+                <span>Gestión de Usuarios</span>
+            </h5>
+            <small class="text-white-50">Tabla MySQL: <code>usuarios_usss014225</code> &bull; Base de Datos: <code>db_academica</code></small>
+        </div>
+        <span class="badge bg-white text-primary px-3 py-2 rounded-pill fw-semibold shadow-sm">
+            <i class="bi bi-mortarboard-fill me-1"></i> Programación III &bull; UGB Usulután
+        </span>
+    </div>
+
+    <div class="card-body p-4 bg-light-subtle">
+        <div class="row g-4">
+            <!-- Columna Formulario de Usuario (Requerimiento 2) -->
+            <div class="col-xl-5 col-lg-5">
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                            <h6 class="fw-bold mb-0 text-dark" id="formUsuarioTitulo">
+                                <i class="bi bi-person-plus-fill text-primary me-2"></i>Registrar Nuevo Usuario
+                            </h6>
+                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle" id="badgeEstadoForm">Nuevo</span>
+                        </div>
+
+                        <div id="usuarioAlerta" class="alert d-none py-2 px-3 small border-0 shadow-sm mb-3"></div>
+
+                        <form id="frmUsuario" onsubmit="event.preventDefault(); guardarUsuario();">
+                            <input type="hidden" id="idUsuario" name="idUsuario" value="">
+
+                            <!-- Campo Usuario -->
+                            <div class="mb-3">
+                                <label for="txtUsuario" class="form-label small fw-semibold text-secondary">
+                                    Usuario (Login) <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text bg-light text-muted"><i class="bi bi-person-badge"></i></span>
+                                    <input type="text" class="form-control" id="txtUsuario" maxlength="35" placeholder="Ej: jsalmeron" required autocomplete="off">
+                                </div>
+                                <div class="form-text small">Máximo 35 caracteres. Único en el sistema.</div>
+                            </div>
+
+                            <!-- Campo Clave -->
+                            <div class="mb-3">
+                                <label for="txtClave" class="form-label small fw-semibold text-secondary">
+                                    Contraseña <span class="text-danger" id="reqClave">*</span>
+                                </label>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text bg-light text-muted"><i class="bi bi-key-fill"></i></span>
+                                    <input type="password" class="form-control" id="txtClave" maxlength="35" placeholder="Contraseña segura" required autocomplete="new-password">
+                                    <button class="btn btn-outline-secondary" type="button" onclick="alternarVerClave('txtClave', 'iconEyeClave')">
+                                        <i class="bi bi-eye" id="iconEyeClave"></i>
+                                    </button>
+                                </div>
+                                <div class="form-text small" id="helpClave">Máximo 35 caracteres.</div>
+                            </div>
+
+                            <!-- Campo Nombre -->
+                            <div class="mb-3">
+                                <label for="txtNombre" class="form-label small fw-semibold text-secondary">
+                                    Nombre Completo <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text bg-light text-muted"><i class="bi bi-card-heading"></i></span>
+                                    <input type="text" class="form-control" id="txtNombre" maxlength="85" placeholder="Ej: Jaime Alexander Salmerón" required>
+                                </div>
+                                <div class="form-text small">Máximo 85 caracteres.</div>
+                            </div>
+
+                            <!-- Campo Dirección -->
+                            <div class="mb-3">
+                                <label for="txtDireccion" class="form-label small fw-semibold text-secondary">
+                                    Dirección <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text bg-light text-muted"><i class="bi bi-geo-alt-fill"></i></span>
+                                    <input type="text" class="form-control" id="txtDireccion" maxlength="100" placeholder="Ej: Calle Principal #12, Usulután" required>
+                                </div>
+                                <div class="form-text small">Máximo 100 caracteres.</div>
+                            </div>
+
+                            <!-- Campo Teléfono -->
+                            <div class="mb-4">
+                                <label for="txtTelefono" class="form-label small fw-semibold text-secondary">
+                                    Teléfono <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text bg-light text-muted"><i class="bi bi-telephone-fill"></i></span>
+                                    <input type="tel" class="form-control" id="txtTelefono" maxlength="9" placeholder="7000-0000" oninput="formatearTelefono(this)" required>
+                                </div>
+                                <div class="form-text small">Formato estándar de 9 caracteres (ej: 7123-4567).</div>
+                            </div>
+
+                            <!-- Botones de Acción -->
+                            <div class="d-flex flex-wrap gap-2 pt-2 border-top">
+                                <button type="submit" class="btn btn-primary flex-fill d-flex align-items-center justify-content-center gap-1 shadow-sm" id="btnGuardarUsuario">
+                                    <i class="bi bi-save2-fill"></i>
+                                    <span id="btnGuardarUsuarioTexto">Guardar Usuario</span>
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary d-flex align-items-center gap-1" onclick="limpiarFormUsuario()" title="Limpiar formulario">
+                                    <i class="bi bi-arrow-counterclockwise"></i>
+                                    <span>Limpiar</span>
+                                </button>
+                                <button type="button" class="btn btn-outline-danger d-none d-flex align-items-center gap-1" id="btnEliminarUsuario" onclick="eliminarUsuarioActual()" title="Eliminar registro">
+                                    <i class="bi bi-trash3-fill"></i>
+                                    <span>Eliminar</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna Tabla y Búsqueda (Requerimiento 4) -->
+            <div class="col-xl-7 col-lg-7">
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-body p-4">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                            <h6 class="fw-bold mb-0 text-dark">
+                                <i class="bi bi-table text-primary me-2"></i>Usuarios Registrados
+                            </h6>
+                            <span class="badge bg-secondary-subtle text-secondary px-3 py-1 rounded-pill" id="totalUsuariosBadge">
+                                0 usuarios
+                            </span>
+                        </div>
+
+                        <!-- Barra de Búsqueda -->
+                        <div class="d-flex gap-2 mb-3">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-search"></i></span>
+                                <input type="text" class="form-control border-start-0" id="txtBuscarUsuario" placeholder="Buscar por usuario, nombre, dirección o teléfono..." onkeyup="buscarUsuarios()">
+                                <button class="btn btn-outline-secondary" type="button" onclick="limpiarBusqueda()" title="Limpiar búsqueda">
+                                    <i class="bi bi-x-lg"></i>
+                                </button>
+                            </div>
+                            <button class="btn btn-outline-primary btn-sm d-flex align-items-center gap-1 px-3" onclick="listarUsuarios()" title="Recargar lista">
+                                <i class="bi bi-arrow-clockwise"></i>
+                                <span class="d-none d-sm-inline">Actualizar</span>
+                            </button>
+                        </div>
+
+                        <!-- Tabla Responsiva -->
+                        <div class="table-responsive rounded-3 border" style="max-height: 480px; overflow-y: auto;">
+                            <table class="table table-hover align-middle mb-0 text-nowrap">
+                                <thead class="table-dark sticky-top small text-uppercase">
+                                    <tr>
+                                        <th scope="col" class="py-2 px-3">ID</th>
+                                        <th scope="col" class="py-2">Usuario</th>
+                                        <th scope="col" class="py-2">Nombre Completo</th>
+                                        <th scope="col" class="py-2">Teléfono</th>
+                                        <th scope="col" class="py-2">Dirección</th>
+                                        <th scope="col" class="py-2 text-center px-3">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tblUsuarios" class="small">
+                                    <tr>
+                                        <td colspan="6" class="text-center py-4 text-muted">
+                                            <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                                            Cargando usuarios...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -8,7 +8,7 @@ class Conexion:
         self.port = 3307
         self.user = "root"
         self.password = ""
-        self.database = "db_sistema_impuestos"
+        self.database = "db_academica"
         self.conexion = None
         self.lock = threading.RLock()
         self.conectar()
@@ -30,9 +30,9 @@ class Conexion:
                     if self.conexion.is_connected():
                         self.port = p
                         return True
-                except Exception as e:
+                except Exception:
                     pass
-            print("No se pudo conectar a la base de datos MySQL en puertos 3307 ni 3306")
+            print(f"No se pudo conectar a la base de datos '{self.database}' en puertos 3307 ni 3306.")
             return False
 
     def verificar_conexion(self):
@@ -74,4 +74,4 @@ class Conexion:
                 return 'ok'
             except Error as e:
                 print(f"Error al ejecutar la consulta: {e}")
-                return f'Error: {e}'
+                return f"Error: {e}"
